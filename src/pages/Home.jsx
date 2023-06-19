@@ -21,7 +21,14 @@ const Home = () => {
               rewarding journey with us.
             </p>
             <div className="flex  gap-4 max-w-[14rem]">
-              <button className="btn btn-primary">Get Started</button>
+              <button
+                onClick={() => {
+                  navigate("/register");
+                }}
+                className="btn btn-primary"
+              >
+                Get Started
+              </button>
               <button
                 onClick={() => {
                   navigate("/sourceCode");

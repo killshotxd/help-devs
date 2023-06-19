@@ -5,7 +5,7 @@ const SourceCodes = () => {
         <div className=" justify-center items-center flex p-3 flex-col lg:flex-row-reverse">
           <input
             type="search"
-            placeholder="Search Source Code..."
+            placeholder="Search Source Code/Developer Name"
             className="input input-bordered text-center input-primary w-full max-w-xl"
           />
         </div>
@@ -19,7 +19,7 @@ const SourceCodes = () => {
           <div className="badge badge-accent badge-outline p-3">accent</div>
         </div>
 
-        <div className="p-6 flex gap-6 flex-wrap">
+        <div className="p-6 md:px-16 flex gap-6 flex-wrap">
           {/* CARD */}
           <div className="card w-96 bg-base-100 shadow-xl">
             <figure>
