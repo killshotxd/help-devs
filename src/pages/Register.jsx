@@ -1,10 +1,16 @@
+import { Toaster, toast } from "react-hot-toast";
 import { UserAuth } from "../context/AuthContext";
 
 const Register = () => {
   const { currentUser } = UserAuth();
+
+  const handleRegister = async () => {
+    if (!currentUser) return toast.error("Login First !");
+  };
   return (
     <>
       {" "}
+      <Toaster />
       <div className="hero min-h-screen bg-base-200">
         <div className="hero-content flex-col lg:flex-row">
           <div className="text-center lg:text-left">
@@ -45,7 +51,7 @@ const Register = () => {
                 <label className="label">
                   <span className="label-text">Position</span>
                 </label>
-                <select className="select select-primary w-full max-w-full">
+                <select className="select w-full max-w-full">
                   <option disabled selected>
                     Role?
                   </option>
@@ -59,7 +65,9 @@ const Register = () => {
                 </select>
               </div>
               <div className="form-control mt-6">
-                <button className="btn btn-primary">Login</button>
+                <button onClick={handleRegister} className="btn btn-primary">
+                  Register
+                </button>
               </div>
             </div>
           </div>

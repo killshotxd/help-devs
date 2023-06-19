@@ -2,12 +2,21 @@ import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../context/AuthContext";
 
 const Header = () => {
-  const { currentUser, logout } = UserAuth();
+  const { currentUser, logout, signInGoogle } = UserAuth();
   const navigate = useNavigate();
+
+  const handleSignIn = async () => {
+    try {
+      await signInGoogle();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleLogout = async () => {
     try {
       await logout();
+      navigate("/");
     } catch (error) {
       console.log(error);
     }
@@ -52,7 +61,7 @@ const Header = () => {
               <li>
                 <p
                   onClick={() => {
-                    navigate("/login");
+                    handleSignIn();
                   }}
                   className=" font-bold"
                 >
@@ -60,20 +69,6 @@ const Header = () => {
                 </p>
               </li>
             )}
-
-            {/* <li>
-              <details>
-                <summary>Parent</summary>
-                <ul className="p-2 bg-base-100">
-                  <li>
-                    <a>Link 1</a>
-                  </li>
-                  <li>
-                    <a>Link 2</a>
-                  </li>
-                </ul>
-              </details>
-            </li> */}
           </ul>
         </div>
       </div>
