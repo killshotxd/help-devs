@@ -1,12 +1,47 @@
 import { Toaster, toast } from "react-hot-toast";
 import { UserAuth } from "../context/AuthContext";
+import { useEffect, useState } from "react";
 
 const Register = () => {
   const { currentUser } = UserAuth();
-
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [role, setRole] = useState("");
+  console.log(role);
   const handleRegister = async () => {
     if (!currentUser) return toast.error("Login First !");
+
+    try {
+      const res = await fetch(
+        "https://enchanting-pink-reindeer.cyclic.app/register",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            name,
+            email,
+            role,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const data = await res.json();
+      if (data.success == true) {
+        toast.success("You Are Registered Now !");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+  useEffect(() => {
+    if (currentUser) {
+      setName(currentUser?.displayName);
+      setEmail(currentUser?.email);
+    }
+  }, []);
   return (
     <>
       {" "}
@@ -31,8 +66,11 @@ const Register = () => {
                 </label>
                 <input
                   type="text"
-                  placeholder="email"
-                  value={currentUser ? currentUser.displayName : ""}
+                  placeholder="Name"
+                  value={name}
+                  onChange={(e) => {
+                    setName(e.target.value);
+                  }}
                   className="input input-bordered"
                 />
               </div>
@@ -43,7 +81,10 @@ const Register = () => {
                 <input
                   type="text"
                   placeholder="email"
-                  value={currentUser ? currentUser.email : ""}
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
                   className="input input-bordered"
                 />
               </div>
@@ -51,7 +92,12 @@ const Register = () => {
                 <label className="label">
                   <span className="label-text">Position</span>
                 </label>
-                <select className="select w-full max-w-full">
+                <select
+                  onChange={(e) => {
+                    setRole(e.target.value);
+                  }}
+                  className="select w-full max-w-full"
+                >
                   <option disabled selected>
                     Role?
                   </option>
