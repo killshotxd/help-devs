@@ -1,13 +1,21 @@
 import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../context/AuthContext";
+import { useEffect, useState } from "react";
 
 const Header = () => {
   const { currentUser, logout, signInGoogle } = UserAuth();
+
+  const [devData, setDevData] = useState();
+
   const navigate = useNavigate();
 
   const handleSignIn = async () => {
     try {
       await signInGoogle();
+      // setTimeout(() => {
+      //   localStorage.setItem("id", devData._id);
+      //   localStorage.setItem("dev", devData.dev);
+      // }, 1500);
     } catch (error) {
       console.log(error);
     }
@@ -16,11 +24,39 @@ const Header = () => {
   const handleLogout = async () => {
     try {
       await logout();
+      localStorage.removeItem("id");
+      localStorage.removeItem("uid");
+      localStorage.removeItem("dev");
       navigate("/");
     } catch (error) {
       console.log(error);
     }
   };
+
+  const fetchDevs = async () => {
+    const id = localStorage.getItem("uid");
+    try {
+      const res = await fetch(
+        `https://enchanting-pink-reindeer.cyclic.app/register/${id}`,
+        {
+          method: "GET",
+        }
+      );
+
+      const data = await res.json();
+      setDevData(data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchDevs();
+    if (devData?._id) {
+      localStorage.setItem("id", devData?._id);
+      localStorage.setItem("dev", devData?.dev);
+    } else return;
+  }, [currentUser, devData]);
   return (
     <>
       <div className="navbar bg-base-100">
@@ -51,6 +87,13 @@ const Header = () => {
                     <li>
                       <a>{currentUser.displayName}</a>
                     </li>
+                    {devData?.dev == true && currentUser ? (
+                      <li>
+                        <a onClick={() => navigate("/dashboard")}>Dashboard</a>
+                      </li>
+                    ) : (
+                      ""
+                    )}
                     <li>
                       <a onClick={handleLogout}>Logout</a>
                     </li>

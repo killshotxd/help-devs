@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
   const signInGoogle = async () => {
     const provider = new GoogleAuthProvider();
     const { user } = await signInWithPopup(auth, provider);
-
+    localStorage.setItem("uid", user?.uid);
     // Add user data to the database
     const userRef = doc(db, "users", user.email);
     const userData = {
@@ -31,6 +31,7 @@ export const AuthProvider = ({ children }) => {
       avatar: user.photoURL,
       uid: user.uid,
     };
+
     await setDoc(userRef, userData, { merge: true });
   };
 

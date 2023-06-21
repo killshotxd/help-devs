@@ -1,14 +1,30 @@
 import { Toaster, toast } from "react-hot-toast";
 import { UserAuth } from "../context/AuthContext";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const navigate = useNavigate();
+  var userRegistered = localStorage.getItem("id");
+  console.log(userRegistered);
+  useEffect(() => {
+    if (userRegistered == undefined || null) {
+      return;
+    } else if (userRegistered) {
+      toast.error("Already Registered Goto Dashboard!");
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 1200);
+    }
+  }, [userRegistered]);
+
   const { currentUser } = UserAuth();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
   console.log(role);
   const handleRegister = async () => {
+    const uid = currentUser?.uid;
     if (!currentUser) return toast.error("Login First !");
 
     try {
@@ -20,6 +36,7 @@ const Register = () => {
             name,
             email,
             role,
+            uid,
           }),
           headers: {
             "Content-Type": "application/json",
@@ -30,7 +47,10 @@ const Register = () => {
       const data = await res.json();
       if (data.success == true) {
         toast.success("You Are Registered Now !");
-      }
+        localStorage.setItem("id", data.data._id);
+        localStorage.setItem("uid", data.data.uid);
+        toast.success("User Successfully registered !");
+      } else toast.error(data.error);
     } catch (error) {
       console.log(error);
     }
