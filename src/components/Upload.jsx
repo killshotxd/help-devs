@@ -18,17 +18,21 @@ const Upload = () => {
   ];
 
   const { currentUser } = UserAuth();
+
   const imagePicker = useRef();
   const filePicker = useRef();
+
   const [imageUrl, setImageUrl] = useState("");
   const [fileUrl, setFileUrl] = useState("");
   const [progress, setProgress] = useState(0);
   const [price, setPrice] = useState("");
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+
   const [formattedPrice, setFormattedPrice] = useState("");
   const [profileImageUploadStarted, setProfileImageUploadStarted] =
     useState(false);
   const [selected, setSelected] = useState([]);
-  console.log(selected);
 
   const handlePriceChange = (e) => {
     const value = e.target.value;
@@ -161,7 +165,28 @@ const Upload = () => {
 
   const handleUploadSource = async () => {
     try {
-      const data = await fetch();
+      const data = await fetch(
+        "https://enchanting-pink-reindeer.cyclic.app/upload",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            image: imageUrl,
+            name: name,
+            description: description,
+            category: selected,
+            price: price,
+            file: fileUrl,
+            uid: localStorage.getItem("uid"),
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const res = await data.json();
+      console.log(res);
+      if (res.success) toast.success("Source Code Uploaded Successfully !");
     } catch (error) {
       console.log(error);
     }
@@ -205,6 +230,8 @@ const Upload = () => {
         <input
           type="text"
           placeholder="Type here"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
           className="input input-ghost w-full "
         />
       </div>
@@ -213,7 +240,9 @@ const Upload = () => {
         <label className="font-semibold">Description : </label>
         <textarea
           type="text"
+          value={description}
           placeholder="Type here"
+          onChange={(e) => setDescription(e.target.value)}
           className="input input-ghost w-full "
         />
       </div>
