@@ -3,10 +3,8 @@ import { MdEdit, MdWork } from "react-icons/md";
 import { BsGithub, BsLinkedin } from "react-icons/bs";
 import { FaLocationArrow } from "react-icons/fa";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Toaster, toast } from "react-hot-toast";
 const Profile = () => {
-  const navigate = useNavigate();
   const { currentUser } = UserAuth();
   const [location, setLocation] = useState("");
   const [linkedin, setLinkedin] = useState("");
