@@ -1,7 +1,7 @@
 import { UserAuth } from "../context/AuthContext";
 import { MdEdit, MdWork } from "react-icons/md";
 import { BsGithub, BsLinkedin } from "react-icons/bs";
-import { FaLocationArrow } from "react-icons/fa";
+import { MdLocationPin } from "react-icons/md";
 import { useEffect, useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
 const Profile = () => {
@@ -92,16 +92,17 @@ const Profile = () => {
         <div className="flex items-center gap-4 justify-between">
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-3 font-semibold">
-              <FaLocationArrow />
+              <MdLocationPin />
             </span>
 
             <span className="font-semibold">
-              {userData ? userData?.location : "Location"}
+              {userData?.location ? userData?.location : "Location"}
             </span>
           </div>
 
-          <div>
+          <div className="hover:bg-cyan-200 rounded-md p-1">
             <MdEdit
+              className="cursor-pointer"
               onClick={() => {
                 window.my_modal_1.showModal();
               }}
@@ -122,8 +123,9 @@ const Profile = () => {
             </span>
           </div>
 
-          <div>
+          <div className="hover:bg-cyan-200 rounded-md p-1">
             <MdEdit
+              className="cursor-pointer"
               onClick={() => {
                 window.my_modal_2.showModal();
               }}
@@ -142,8 +144,9 @@ const Profile = () => {
             </span>
           </div>
 
-          <div>
+          <div className="hover:bg-cyan-200 rounded-md p-1">
             <MdEdit
+              className="cursor-pointer "
               onClick={() => {
                 window.my_modal_3.showModal();
               }}

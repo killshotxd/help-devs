@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { useRef, useState } from "react";
 import { BsFileImage } from "react-icons/bs";
@@ -6,7 +8,7 @@ import { storage } from "../Firebase";
 import { UserAuth } from "../context/AuthContext";
 import { MultiSelect } from "react-multi-select-component";
 import { Toaster, toast } from "react-hot-toast";
-const Upload = () => {
+const Upload = ({ onCodeUploaded }) => {
   const options = [
     { value: "node", label: "NodeJs" },
     { value: "angular", label: "Angular" },
@@ -164,6 +166,16 @@ const Upload = () => {
   };
 
   const handleUploadSource = async () => {
+    if (
+      name == " " ||
+      price == "" ||
+      description == " " ||
+      imageUrl == "" ||
+      fileUrl == ""
+    ) {
+      toast.error("Please Fill All required Fields");
+      return;
+    }
     try {
       const data = await fetch(
         "https://enchanting-pink-reindeer.cyclic.app/upload",
@@ -185,8 +197,18 @@ const Upload = () => {
       );
 
       const res = await data.json();
-      console.log(res);
-      if (res.success) toast.success("Source Code Uploaded Successfully !");
+
+      if (res.success) {
+        toast.success("Source Code Uploaded Successfully !");
+        setFileUrl("");
+        setImageUrl("");
+        setName("");
+        setDescription("");
+        setSelected([]);
+        setPrice("");
+        setFormattedPrice("");
+        onCodeUploaded();
+      }
     } catch (error) {
       console.log(error);
     }
@@ -216,7 +238,7 @@ const Upload = () => {
           onClick={handleImageClick}
           className=" cursor-pointer btn-ghost shadow-lg w-full p-6 rounded flex justify-center items-center text-xs gap-1"
         >
-          <BsFileImage size={30} /> Please upload an Image
+          <BsFileImage size={30} /> Please upload a Cover
         </div>
       </div>
       <div className="w-full customImgDiv flex justify-center m-auto items-center px-2 max-w-xs">
