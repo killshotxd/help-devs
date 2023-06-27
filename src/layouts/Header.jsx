@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 const Header = () => {
   const { currentUser, logout, signInGoogle } = UserAuth();
 
-  const [devData, setDevData] = useState();
+  const [devData, setDevData] = useState(null);
 
   const navigate = useNavigate();
 
@@ -16,18 +16,6 @@ const Header = () => {
       //   localStorage.setItem("id", devData._id);
       //   localStorage.setItem("dev", devData.dev);
       // }, 1500);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleLogout = async () => {
-    try {
-      await logout();
-      localStorage.removeItem("id");
-      localStorage.removeItem("uid");
-      localStorage.removeItem("dev");
-      navigate("/");
     } catch (error) {
       console.log(error);
     }
@@ -45,6 +33,13 @@ const Header = () => {
 
       const data = await res.json();
       setDevData(data.data);
+      if (data?.data.dev) {
+        localStorage.setItem("id", data?.data?._id);
+        localStorage.setItem("dev", data?.data?.dev);
+      } else {
+        localStorage.setItem("id", undefined);
+        localStorage.setItem("dev", undefined);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -52,11 +47,21 @@ const Header = () => {
 
   useEffect(() => {
     fetchDevs();
-    if (devData?._id) {
-      localStorage.setItem("id", devData?._id);
-      localStorage.setItem("dev", devData?.dev);
-    } else return;
-  }, [currentUser, devData]);
+  }, [currentUser]);
+
+  const handleLogout = async () => {
+    try {
+      setDevData(null);
+      localStorage.removeItem("id");
+      localStorage.removeItem("uid");
+      localStorage.removeItem("dev");
+      await logout();
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <div className="navbar bg-base-100">

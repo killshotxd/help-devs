@@ -30,7 +30,7 @@ const SourceCodes = () => {
           <input
             type="search"
             placeholder="Search Source Code/Developer Name"
-            className="input input-bordered text-center input-primary w-full max-w-xl"
+            className="input input-bordered text-center input-primary mt-4 w-full max-w-xl"
           />
         </div>
 
@@ -47,14 +47,17 @@ const SourceCodes = () => {
           {sourceCodes?.map((res) => (
             <>
               {/* CARD */}
-              <div key={res?._id} className="card w-96 bg-base-100 shadow-xl">
+              <div
+                key={res?._id}
+                className="card w-80 h-96 bg-base-100 shadow-xl"
+              >
                 <figure>
                   <img src={res?.image} alt="cover" />
                 </figure>
                 <div className="card-body">
                   <h2 className="card-title">{res?.name}!</h2>
                   <p>{res?.description}</p>
-                  <div className="card-actions justify-end">
+                  <div className="card-actions mt-3 justify-end">
                     <button className="btn btn-primary">Buy Now</button>
                   </div>
                 </div>

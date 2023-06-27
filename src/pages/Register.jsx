@@ -8,7 +8,7 @@ const Register = () => {
   var userRegistered = localStorage.getItem("id");
   console.log(userRegistered);
   useEffect(() => {
-    if (userRegistered == undefined || null) {
+    if (userRegistered == undefined || null || "") {
       return;
     } else if (userRegistered) {
       toast.error("Already Registered Goto Dashboard!");
