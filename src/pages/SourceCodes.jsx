@@ -1,4 +1,28 @@
+import { useEffect, useState } from "react";
+
 const SourceCodes = () => {
+  const [sourceCodes, setSourceCodes] = useState(null);
+
+  const fetchAllSourceCodes = async () => {
+    try {
+      const data = await fetch(
+        "https://enchanting-pink-reindeer.cyclic.app/upload",
+        {
+          method: "GET",
+        }
+      );
+
+      const res = await data.json();
+      setSourceCodes(res?.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchAllSourceCodes();
+  }, []);
+
   return (
     <>
       <div className="min-h-screen justify-center bg-base-200">
@@ -20,43 +44,25 @@ const SourceCodes = () => {
         </div>
 
         <div className="p-6 md:px-16 flex gap-6 flex-wrap">
-          {/* CARD */}
-          <div className="card w-96 bg-base-100 shadow-xl">
-            <figure>
-              <img
-                src="https://images.unsplash.com/photo-1617900906639-cab7adceb499?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
-                alt="Shoes"
-              />
-            </figure>
-            <div className="card-body">
-              <h2 className="card-title">Shoes!</h2>
-              <p>If a dog chews shoes whose shoes does he choose?</p>
-              <div className="card-actions justify-end">
-                <button className="btn btn-primary">Buy Now</button>
+          {sourceCodes?.map((res) => (
+            <>
+              {/* CARD */}
+              <div key={res?._id} className="card w-96 bg-base-100 shadow-xl">
+                <figure>
+                  <img src={res?.image} alt="cover" />
+                </figure>
+                <div className="card-body">
+                  <h2 className="card-title">{res?.name}!</h2>
+                  <p>{res?.description}</p>
+                  <div className="card-actions justify-end">
+                    <button className="btn btn-primary">Buy Now</button>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
 
-          {/* CARD */}
-
-          {/* CARD */}
-          <div className="card w-96 bg-base-100 shadow-xl">
-            <figure>
-              <img
-                src="https://images.unsplash.com/photo-1603575448360-153f093fd0b2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
-                alt="Shoes"
-              />
-            </figure>
-            <div className="card-body">
-              <h2 className="card-title">Shoes!</h2>
-              <p>If a dog chews shoes whose shoes does he choose?</p>
-              <div className="card-actions justify-end">
-                <button className="btn btn-primary">Buy Now</button>
-              </div>
-            </div>
-          </div>
-
-          {/* CARD */}
+              {/* CARD */}
+            </>
+          ))}
         </div>
       </div>
     </>
