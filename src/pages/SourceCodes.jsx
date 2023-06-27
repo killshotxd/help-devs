@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 const SourceCodes = () => {
   const [sourceCodes, setSourceCodes] = useState(null);
-
+  const [searchQuery, setSearchQuery] = useState("");
   const fetchAllSourceCodes = async () => {
     try {
       const data = await fetch(
@@ -19,6 +19,10 @@ const SourceCodes = () => {
     }
   };
 
+  const filteredSourceCodes = sourceCodes?.filter((res) =>
+    res?.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   useEffect(() => {
     fetchAllSourceCodes();
   }, []);
@@ -29,6 +33,8 @@ const SourceCodes = () => {
         <div className=" justify-center items-center flex p-3 flex-col lg:flex-row-reverse">
           <input
             type="search"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search Source Code/Developer Name"
             className="input input-bordered text-center input-primary mt-4 w-full max-w-xl"
           />
@@ -44,7 +50,7 @@ const SourceCodes = () => {
         </div>
 
         <div className="p-6 md:px-16 flex gap-6 flex-wrap">
-          {sourceCodes?.map((res) => (
+          {filteredSourceCodes?.map((res) => (
             <>
               {/* CARD */}
               <div
@@ -55,7 +61,11 @@ const SourceCodes = () => {
                   <img src={res?.image} alt="cover" />
                 </figure>
                 <div className="card-body">
-                  <h2 className="card-title">{res?.name}!</h2>
+                  <div>
+                    <spam className="card-title">{res?.name}!</spam>
+                    <span className="badge bg-slate-300 ">name</span>
+                  </div>
+
                   <p>{res?.description}</p>
                   <div className="card-actions mt-3 justify-end">
                     <button className="btn btn-primary">Buy Now</button>
