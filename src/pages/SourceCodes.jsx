@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
+import { Dna } from "react-loader-spinner";
 
 const SourceCodes = () => {
   const [sourceCodes, setSourceCodes] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [loading, setLoading] = useState(false);
   const fetchAllSourceCodes = async () => {
     try {
+      setLoading(true);
       const data = await fetch(
         "https://enchanting-pink-reindeer.cyclic.app/upload",
         {
@@ -14,7 +17,9 @@ const SourceCodes = () => {
 
       const res = await data.json();
       setSourceCodes(res?.data);
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
@@ -48,35 +53,47 @@ const SourceCodes = () => {
           </div>
           <div className="badge badge-accent badge-outline p-3">accent</div>
         </div>
+        {loading ? (
+          <div className="flex m-auto items-center justify-center">
+            <Dna
+              visible={true}
+              height="80"
+              width="80"
+              ariaLabel="dna-loading"
+              wrapperStyle={{}}
+              wrapperClass="dna-wrapper"
+            />
+          </div>
+        ) : (
+          <div className="p-6 md:px-16 flex gap-6 flex-wrap">
+            {filteredSourceCodes?.map((res) => (
+              <>
+                {/* CARD */}
+                <div
+                  key={res?._id}
+                  className="card w-80 h-96 bg-base-100 shadow-xl"
+                >
+                  <figure>
+                    <img src={res?.image} alt="cover" />
+                  </figure>
+                  <div className="card-body">
+                    <div>
+                      <spam className="card-title">{res?.name}!</spam>
+                      <span className="badge bg-slate-300 ">name</span>
+                    </div>
 
-        <div className="p-6 md:px-16 flex gap-6 flex-wrap">
-          {filteredSourceCodes?.map((res) => (
-            <>
-              {/* CARD */}
-              <div
-                key={res?._id}
-                className="card w-80 h-96 bg-base-100 shadow-xl"
-              >
-                <figure>
-                  <img src={res?.image} alt="cover" />
-                </figure>
-                <div className="card-body">
-                  <div>
-                    <spam className="card-title">{res?.name}!</spam>
-                    <span className="badge bg-slate-300 ">name</span>
-                  </div>
-
-                  <p>{res?.description}</p>
-                  <div className="card-actions mt-3 justify-end">
-                    <button className="btn btn-primary">Buy Now</button>
+                    <p>{res?.description}</p>
+                    <div className="card-actions mt-3 justify-end">
+                      <button className="btn btn-primary">Buy Now</button>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* CARD */}
-            </>
-          ))}
-        </div>
+                {/* CARD */}
+              </>
+            ))}
+          </div>
+        )}
       </div>
     </>
   );
