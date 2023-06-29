@@ -177,6 +177,8 @@ const Upload = ({ onCodeUploaded }) => {
       return;
     }
     try {
+      const userName = currentUser?.displayName;
+      const userUid = localStorage.getItem("uid");
       const data = await fetch(
         "https://enchanting-pink-reindeer.cyclic.app/upload",
         {
@@ -188,7 +190,8 @@ const Upload = ({ onCodeUploaded }) => {
             category: selected,
             price: price,
             file: fileUrl,
-            uid: localStorage.getItem("uid"),
+            uid: userUid,
+            userName: userName,
           }),
           headers: {
             "Content-Type": "application/json",
@@ -197,9 +200,11 @@ const Upload = ({ onCodeUploaded }) => {
       );
 
       const res = await data.json();
+      console.log(res);
 
       if (res.success) {
         toast.success("Source Code Uploaded Successfully !");
+        onCodeUploaded();
         setFileUrl("");
         setImageUrl("");
         setName("");
@@ -207,7 +212,6 @@ const Upload = ({ onCodeUploaded }) => {
         setSelected([]);
         setPrice("");
         setFormattedPrice("");
-        onCodeUploaded();
       }
     } catch (error) {
       console.log(error);

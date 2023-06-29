@@ -17,6 +17,7 @@ const SourceCodes = () => {
 
       const res = await data.json();
       setSourceCodes(res?.data);
+
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -77,9 +78,11 @@ const SourceCodes = () => {
                     <img src={res?.image} alt="cover" />
                   </figure>
                   <div className="card-body">
-                    <div>
-                      <spam className="card-title">{res?.name}!</spam>
-                      <span className="badge bg-slate-300 ">name</span>
+                    <div className="">
+                      <span className="card-title">{res?.name}!</span>
+                      <span className="badge bg-slate-300 ">
+                        {res?.userName ? res?.userName : "Author"}
+                      </span>
                     </div>
 
                     <p>{res?.description}</p>

@@ -6,7 +6,7 @@ import { IoMdTrash } from "react-icons/io";
 import { Dna } from "react-loader-spinner";
 
 const MyCodes = ({ isCodeUploaded, onCodeUploaded }) => {
-  const [sourceCodes, setSourceCodes] = useState(null);
+  const [sourceCodes, setSourceCodes] = useState([]);
   const [loading, setLoading] = useState(false);
   const uid = localStorage.getItem("uid");
   const fetchUserSourceCodes = async () => {
@@ -53,8 +53,8 @@ const MyCodes = ({ isCodeUploaded, onCodeUploaded }) => {
   };
 
   useEffect(() => {
-    fetchUserSourceCodes();
     onCodeUploaded();
+    fetchUserSourceCodes();
   }, [isCodeUploaded]);
 
   return (
@@ -73,55 +73,45 @@ const MyCodes = ({ isCodeUploaded, onCodeUploaded }) => {
         </div>
       ) : (
         <>
-          {sourceCodes ? (
+          {" "}
+          {sourceCodes?.map((res) => (
             <>
-              {" "}
-              {sourceCodes?.map((res) => (
-                <>
-                  <div
-                    key={res?._id}
-                    className="card mb-6 w-full bg-base-100 shadow-md p-4 md:p-4"
-                  >
-                    <div className="grid md:grid-cols-2 grid-cols-1">
-                      <div>
-                        <img src={res?.image} alt="image" />
-                      </div>
-                      <div className="px-4 flex items-center gap-2">
-                        <span className="text-xs font-semibold">
-                          {res?.name}
-                        </span>
-                        <span className="badge  text-xs badge-secondary">
-                          ₹ {parseInt(res?.price).toLocaleString("en-IN")}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="mt-4 flex items-center justify-between">
-                      <span className="badge  text-xs bg-slate-300">
-                        {res?.uploadedDate?.slice(0, 10)}
-                      </span>
-
-                      <span
-                        onClick={() => {
-                          handleDeleteSource(res?._id);
-                        }}
-                        className=" cursor-pointer"
-                      >
-                        <IoMdTrash
-                          className="hover:bg-red-300  rounded-md"
-                          size={25}
-                        />
-                      </span>
-                    </div>
+              <div
+                key={res?._id}
+                className="card mb-6 w-full bg-base-100 shadow-md p-4 md:p-4"
+              >
+                <div className="grid md:grid-cols-2 grid-cols-1">
+                  <div>
+                    <img src={res?.image} alt="image" />
                   </div>
-                </>
-              ))}{" "}
+                  <div className="px-4 flex items-center gap-2">
+                    <span className="text-xs font-semibold">{res?.name}</span>
+                    <span className="badge  text-xs badge-secondary">
+                      ₹ {parseInt(res?.price).toLocaleString("en-IN")}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="mt-4 flex items-center justify-between">
+                  <span className="badge  text-xs bg-slate-300">
+                    {res?.uploadedDate?.slice(0, 10)}
+                  </span>
+
+                  <span
+                    onClick={() => {
+                      handleDeleteSource(res?._id);
+                    }}
+                    className=" cursor-pointer"
+                  >
+                    <IoMdTrash
+                      className="hover:bg-red-300  rounded-md"
+                      size={25}
+                    />
+                  </span>
+                </div>
+              </div>
             </>
-          ) : (
-            <div className="text-center font-semibold py-3">
-              ALL UPLOADED SOURCE CODES
-            </div>
-          )}
+          ))}{" "}
         </>
       )}
     </>
