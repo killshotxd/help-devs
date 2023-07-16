@@ -178,6 +178,7 @@ const Upload = ({ onCodeUploaded }) => {
     }
     try {
       const userName = currentUser?.displayName;
+      const userImage = currentUser?.photoURL;
       const userUid = localStorage.getItem("uid");
       const data = await fetch(
         "https://enchanting-pink-reindeer.cyclic.app/upload",
@@ -192,6 +193,7 @@ const Upload = ({ onCodeUploaded }) => {
             file: fileUrl,
             uid: userUid,
             userName: userName,
+            userImage: userImage,
           }),
           headers: {
             "Content-Type": "application/json",
