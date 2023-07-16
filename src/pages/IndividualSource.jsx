@@ -12,7 +12,7 @@ const IndividualSource = () => {
       <div className=" min-h-screen bg-base-200">
         <div className="grid grid-cols-1 px-6 py-6 gap-4">
           <section className="overflow-hidden">
-            <div className="mx-auto max-w-5xl px-5 py-24">
+            <div className="mx-auto max-w-7xl px-5 py-24">
               <div className="mx-auto flex flex-wrap items-center lg:w-4/5">
                 <img
                   alt="Source image"
@@ -34,7 +34,9 @@ const IndividualSource = () => {
                 <span className="ml-3 inline-block text-xs font-semibold">4 Reviews</span>
               </span> */}
                     <p className=" font-semibold">Tech Stacks :</p>
-                    <span className="badge badge-accent">{filters}</span>
+                    <span className="badge badge-accent">
+                      {filters.join(",")}
+                    </span>
                   </div>
                   <p className="leading-relaxed">{res.description}</p>
                   <div className="mb-5 mt-6 flex items-center border-b-2 border-gray-100 pb-5"></div>
