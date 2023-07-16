@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { Dna } from "react-loader-spinner";
+import { useNavigate } from "react-router-dom";
 
 const SourceCodes = () => {
+  const navigate = useNavigate();
+
   const [sourceCodes, setSourceCodes] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(false);
@@ -79,7 +82,22 @@ const SourceCodes = () => {
                   </figure>
                   <div className="card-body">
                     <div className="">
-                      <span className="card-title">{res?.name}!</span>
+                      <span
+                        onClick={() =>
+                          navigate(`/individual/${res?._id}`, { state: res })
+                        }
+                        className="card-title"
+                      >
+                        {res?.name}{" "}
+                        <span className="badge badge-sm badge-accent ">
+                          {new Intl.NumberFormat("en-IN", {
+                            style: "currency",
+                            currency: "INR",
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0,
+                          }).format(res.price)}
+                        </span>
+                      </span>
                       <span className="badge bg-slate-300 ">
                         {res?.userName ? res?.userName : "Author"}
                       </span>
